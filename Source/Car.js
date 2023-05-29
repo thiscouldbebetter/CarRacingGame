@@ -1,12 +1,23 @@
 
 class Car
 {
-	constructor(defnName, colorName, wheelAngleInTurns, disposition)
+	constructor
+	(
+		defnName,
+		colorName,
+		wheelAngleInTurns,
+		disposition,
+		activityDefnName
+	)
 	{
 		this.defnName = defnName;
 		this.colorName = colorName;
 		this.wheelAngleInTurns = wheelAngleInTurns;
 		this.disposition = disposition;
+
+		this.activity = new Activity(activityDefnName);
+
+		this._bounds = new ShapeRectangle(this.disposition.pos, this.defn().size);
 	}
 
 	static fromColorNameAndPos(colorName, pos)
@@ -15,8 +26,17 @@ class Car
 
 		return new Car
 		(
-			"Default", colorName, wheelAngle, Disposition.fromPos(pos)
+			colorName, // defnName
+			colorName,
+			wheelAngle,
+			Disposition.fromPos(pos),
+			ActivityDefn.Instances().DoNothing.name
 		);
+	}
+
+	bounds()
+	{
+		return this._bounds;
 	}
 
 	defn()
@@ -27,11 +47,8 @@ class Car
 	drawToDisplay(display)
 	{
 		var defn = this.defn();
-		var defnSize = defn.size;
-		display.drawRectangleOfSizeWithDispositionAndColor
-		(
-			defnSize, this.disposition, this.colorName
-		);
+		var visual = defn.visual;
+		visual.drawToDisplayForEntity(display, this);
 	}
 
 	initialize()
@@ -39,8 +56,25 @@ class Car
 		var defn = this.defn();
 	}
 
-	updateForTimerTick(universe)
+	updateForTimerTick(universe, world, place)
 	{
 		this.drawToDisplay(universe.display);
+		this.activity.perform(universe, world, this);
+		var disp = this.disposition;
+		disp.updateForTimerTick();
+		var carDefn = this.defn();
+		disp.vel.trimToMagnitudeMax(carDefn.speedMax);
+
+		var doesCollideWithObstacle = place.obstacles.some
+		(
+			obstacle =>
+			{
+				var carBounds = this.bounds();
+				var obstacleBounds = obstacle.bounds();
+				var doBoundsCollide = carBounds.overlapsWith(obstacleBounds);
+				return doBoundsCollide;
+			} 
+		);
 	}
 }
+

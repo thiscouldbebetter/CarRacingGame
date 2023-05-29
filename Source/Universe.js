@@ -27,9 +27,12 @@ class Universe
 
 	initialize()
 	{
+		this.inputTracker = new InputTracker();
+
 		this.display.initialize();
 		this.world.initialize();
 		this.timerHelper.initialize(this);
+		this.inputTracker.initialize(this);
 	}
 
 	updateForTimerTick()
