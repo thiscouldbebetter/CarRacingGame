@@ -50,14 +50,37 @@ class ActivityDefn_Instances
 					var keyPressed = keysPressed[i];
 					if (keyPressed.startsWith("Arrow") )
 					{
-						if (keyPressed == "ArrowUp")
+						var carDefn = actor.defn();
+						var disp = actor.disposition;
+						var forward = disp.forward();
+
+						if (keyPressed == "ArrowDown")
 						{
-							var carDefn = actor.defn();
+							var brakingThisTick = carDefn.braking;
+							var vel = disp.vel;
+							var speedForwardBeforeBraking = vel.dotProduct(forward);
+							var speedForwardAfterBraking =
+								speedForwardBeforeBraking - brakingThisTick;
+							if (speedForwardAfterBraking < 0)
+							{
+								speedForwardAfterBraking = 0;
+							}
+							vel.trimToMagnitudeMax(speedForwardAfterBraking);
+						}
+						else if (keyPressed == "ArrowLeft")
+						{
+							actor.wheelAngleInTurns = 0 - carDefn.wheelAngleInTurnsMax;
+						}
+						else if (keyPressed == "ArrowRight")
+						{
+							actor.wheelAngleInTurns = carDefn.wheelAngleInTurnsMax;
+						}
+						else if (keyPressed == "ArrowUp")
+						{
 							var accelerationThisTick = carDefn.acceleration;
-							var disp = actor.disposition;
-							var forward = disp.forward();
 							disp.accel.overwriteWith(forward).multiplyScalar(accelerationThisTick);
 						}
+
 					}
 				}
 			}

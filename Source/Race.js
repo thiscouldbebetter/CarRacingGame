@@ -12,7 +12,10 @@ class Race
 	static demo()
 	{
 		var track = Track.demo();
-		var trackStartPos = track.path.vertexPositions[0];
+		var trackStartPos = track.path.vertexPositions[0].clone().add
+		(
+			track.size.clone().half()
+		);
 		var carPlayer = Car.fromColorNameAndPos("Red", trackStartPos.clone() );
 		var carSpacing = new Coords(0, carPlayer.defn().size.y * 2);
 		carPlayer.disposition.pos.subtract(carSpacing);

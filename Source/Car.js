@@ -63,7 +63,16 @@ class Car
 		var disp = this.disposition;
 		disp.updateForTimerTick();
 		var carDefn = this.defn();
-		disp.vel.trimToMagnitudeMax(carDefn.speedMax);
+		var vel = disp.vel;
+		vel.trimToMagnitudeMax(carDefn.speedMax);
+
+		var forwardInTurns = disp.headingInTurns;
+		var wheelAngleAbsolute = NumberHelper.wrapNumberToRangeMax
+		(
+			forwardInTurns + this.wheelAngleInTurns, 1
+		); 
+		var wheelAngleAsCoords = new Coords().fromAngleInTurns(wheelAngleAbsolute);
+		var speedAlongWheelAngle = vel.clone().dotProduct(wheelAngleAsCoords);
 
 		var doesCollideWithObstacle = place.obstacles.some
 		(

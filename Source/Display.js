@@ -40,8 +40,6 @@ class Display
 	{
 		var vertexPositions = path.vertexPositions;
 		var g = this.graphics;
-		g.fillStyle = colorFillName;
-		g.strokeStyle = colorBorderName;
 		g.lineWidth = width;
 		g.beginPath();
 		for (var i = 0; i < vertexPositions.length; i++)
@@ -57,8 +55,18 @@ class Display
 			}
 		}
 		g.closePath();
-		g.fill();
-		g.stroke();
+
+		if (colorFillName != null)
+		{
+			g.fillStyle = colorFillName;
+			g.fill();
+		}
+
+		if (colorBorderName != null)
+		{
+			g.strokeStyle = colorBorderName;
+			g.stroke();
+		}
 	}
 
 	drawRectangleOfSizeWithDispositionAndColor(size, disposition, colorName)

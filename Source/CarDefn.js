@@ -6,7 +6,8 @@ class CarDefn
 		name,
 		acceleration,
 		braking,
-		wheelFrictionTransverse,
+		wheelAngleInTurnsMax,
+		tireFrictionTransverse,
 		speedMax,
 		size,
 		visual
@@ -15,7 +16,8 @@ class CarDefn
 		this.name = name;
 		this.acceleration = acceleration;
 		this.braking = braking;
-		this.wheelFrictionTransverse = wheelFrictionTransverse;
+		this.wheelAngleInTurnsMax = wheelAngleInTurnsMax;
+		this.tireFrictionTransverse = tireFrictionTransverse;
 		this.speedMax = speedMax;
 		this.size = size;
 		this.visual = visual;
@@ -49,6 +51,7 @@ class CarDefn_Instances
 				colorName,
 				.05, // acceleration
 				.1, // braking
+				.125, // wheelAngleInTurnsMax
 				.1, // wheelFrictionTransverse
 				3, // speedMax
 				carSize,

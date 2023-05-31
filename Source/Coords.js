@@ -61,6 +61,23 @@ class Coords
 		return this;
 	}
 
+	dotProduct(other)
+	{
+		return this.x * other.x + this.y * other.y + this.z * other.z;
+	}
+
+	fromAngleInTurns(angleInTurns)
+	{
+		var angleInRadians = angleInTurns * Math.PI * 2;
+		this.overwriteWithDimensions
+		(
+			Math.cos(angleInRadians),
+			Math.sin(angleInRadians),
+			0
+		);
+		return this;
+	}
+
 	half()
 	{
 		return this.divideScalar(2);
